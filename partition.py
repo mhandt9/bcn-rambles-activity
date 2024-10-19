@@ -2,7 +2,10 @@ import os
 from PIL import Image
 
 """
-Partitions ALL images in images/raw into a folder with 6 partitions (two rows, three columns)
+If run as __main__: Partitions ALL images in images/raw into a folder with 6 partitions (two rows, three columns)
+
+Otherwise contains functions to partition one image or combine partitions back into the original height and width
+
 """
 
 def partition_into_six(img):
