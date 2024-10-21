@@ -23,6 +23,9 @@ Scraping images every hour:
 ```
 python scrape_image.py --schedule
 ```
+The logs will show something like this:
+
+![Example logs from scraping hourly](https://github.com/mhandt9/bcn-rambles-activity/blob/main/example_imgs/example_logs_scraping.png)
 
 ### Running model
 
