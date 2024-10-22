@@ -6,9 +6,11 @@ import re
 import schedule
 import time
 import argparse
-from partition import partition_into_six
+from partition import partition_into_six #from partition.py
 
 def scrape_image():
+    
+    # link to rambles webcam (not a live feed, just pictures taken roughly every 45 mins)
     link = 'https://www.3cat.cat/el-temps/port-olimpic-barcelona/camera/53/'
     response = requests.get(link, timeout=10)
     response.raise_for_status()
@@ -18,18 +20,21 @@ def scrape_image():
     img = soup.select_one('img.F-imatge:nth-child(1)')
     datetime = soup.select_one('.R-info__data')['datetime'].replace(' ','_').replace(':','-')
 
+
+    # gets the temperature, humidity and keeps only the number
     temp_text = soup.select_one('.temperature').get_text()
     humidity_text = soup.select_one('.humidity').get_text()
     temp = re.search(r'\d+', temp_text).group()
     humidity = re.search(r'\d+', humidity_text).group()
 
+    # gets image url
     img_url = img['data-src']
 
     if img_url.startswith('//'):
         img_url = 'https:' + img_url
 
         try:
-
+            # downloads image, saves raw
             img_response = requests.get(img_url)
 
             img = Image.open(BytesIO(img_response.content))
@@ -50,10 +55,10 @@ def scrape_image():
 
 def run_scheduled():
     """Run the image scraping every hour."""
-    # Schedule the task to run every hour
+    # schedules the task to run every hour
     schedule.every().hour.do(scrape_image)
 
-    # Keep the script running and check for scheduled jobs
+    # keep the script running and check for scheduled jobs
     while True:
         schedule.run_pending()
         time.sleep(60)
@@ -61,6 +66,7 @@ def run_scheduled():
 
 if __name__ == "__main__":
     
+    # some arguments to determine whether its run just once or set up to run hourly (--schedule flag)
     parser = argparse.ArgumentParser(description="Scrape and process either one image or schedule it to scrape every x minutes.")
 
     parser.add_argument('--schedule', action='store_true', help="Run the script with hourly scheduling")

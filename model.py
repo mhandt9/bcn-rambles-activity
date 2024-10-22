@@ -1,23 +1,28 @@
 from ultralytics import YOLO
 import shutil
 import os
-from partition import combine_six_partitions
+from partition import combine_six_partitions # from partition.py
 import argparse
 
 def run_model(model, run_name: str, conf):
     """Runs provided YOLO model, saves predicted partitions under folder in runs/run_name and provides resulting final image in results/run_name"""
 
+    # gets path to partitions
     partitions_folders = ['images/partitioned/'+x for x in os.listdir('images/partitioned')]
 
+    # creates folder for the run
     os.mkdir('runs/'+run_name)
 
+    # loops through all the partitioned images
     for folder in partitions_folders:
         results = model(source=folder, show=False, conf=conf, save=True, project='runs', name=folder.split('partitioned/')[1])
         shutil.move(src='runs/'+folder.split('partitioned/')[1], dst='runs/'+run_name)
         print('Results moved to runs/'+run_name+'/'+folder.split('partitioned/')[1])
 
+    # creates folder for the run's results
     os.mkdir('results/'+run_name)
 
+    # fills the results folder with recombined images
     for partitioned_results in os.listdir('runs/'+run_name):
         combine_six_partitions(partition_folder='runs/'+run_name+'/'+partitioned_results, output_path='results/'+run_name+'/'+partitioned_results)
 
