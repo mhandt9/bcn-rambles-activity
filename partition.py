@@ -16,7 +16,7 @@ def partition_into_six(img):
     partition_width = width // 3  # 3 columns
     partition_height = height // 2  # 2 rows
 
-    filename = img.filename.split('raw\\')[1].replace('.png', '')
+    filename = img.filename.split('raw/')[1].replace('.png', '')
 
     # make a folder for the partitions
     os.mkdir('images/partitioned/'+filename)
@@ -37,7 +37,10 @@ def partition_into_six(img):
             partition = img.crop((left, upper, right, lower))
 
             # save the 6 partitions to their folder with this format as name: 'images/partitions/date_time_temperatre_humiditiy_pnum.png
-            partition.save('images/partitioned/'+filename+'/'+filename+'_p'+str(pnum)+'.png')
+            try:
+                partition.save('images/partitioned/'+filename+'/'+filename+'_p'+str(pnum)+'.png')
+            except FileExistsError:
+                print("Partitioned image already exists for the exact same time.")
 
 def combine_six_partitions(partition_folder, output_path):
     """Combines six partitions (two rows, three columns) back into a single image."""
