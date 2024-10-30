@@ -43,4 +43,4 @@ This will save predictions of every partition in the folder images/partitioned u
 
 ## Next Steps
 
-I will try to improve the model's performance detecting onjects far away by manually labelling images and fine-tuning with them.
+I will try to improve the model's performance detecting objects far away by manually labelling images and fine-tuning with them.
