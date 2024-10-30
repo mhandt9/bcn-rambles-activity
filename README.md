@@ -39,3 +39,8 @@ For example:
 python model.py --model yolov8n.pt --conf 0.5 --run_name custom_run_name
 ```
 This will save predictions of every partition in the folder images/partitioned under runs/run_name and the restored predictions of the full images in results/run_name.
+
+
+## Next Steps
+
+I will try to improve the model's performance detecting onjects far away by manually labelling images and fine-tuning with them.
